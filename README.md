@@ -1,3 +1,23 @@
+# Elixir Hello World Recipe App
+
+<!-- #ZEROPS_EXTRACT_START:intro# -->
+A minimal Elixir web application built with Plug and Cowboy that connects to a PostgreSQL database, runs Ecto migrations on deploy, and exposes a single health check endpoint at `/`. Used within [Elixir Hello World recipe](https://app.zerops.io/recipes/elixir-hello-world) for [Zerops](https://zerops.io) platform.
+<!-- #ZEROPS_EXTRACT_END:intro# -->
+
+⬇️ **Full recipe page and deploy with one-click**
+
+[![Deploy on Zerops](https://github.com/zeropsio/recipe-shared-assets/blob/main/deploy-button/light/deploy-button.svg)](https://app.zerops.io/recipes/elixir-hello-world?environment=small-production)
+
+![elixir cover](https://github.com/zeropsio/recipe-shared-assets/blob/main/covers/svg/cover-elixir.svg)
+
+## Integration Guide
+
+<!-- #ZEROPS_EXTRACT_START:integration-guide# -->
+
+### 1. Adding `zerops.yaml`
+The main application configuration file you place at the root of your repository, it tells Zerops how to build, deploy and run your application.
+
+```yaml
 zerops:
   # Production setup — compile a self-contained OTP release,
   # deploy the release artifact to a minimal Alpine runtime.
@@ -137,3 +157,5 @@ zerops:
       # Container stays idle — developer starts the app
       # manually: mix run --no-halt  or  iex -S mix
       start: zsc noop --silent
+```
+<!-- #ZEROPS_EXTRACT_END:integration-guide# -->
