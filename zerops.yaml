@@ -113,6 +113,10 @@ zerops:
         DB_USER: ${db_user}
         DB_PASS: ${db_password}
         DB_NAME: db
+        # Mix requires HOME to locate ~/.mix archives.
+        # Zerops runtime containers don't inherit HOME
+        # from the OS user — set it explicitly.
+        HOME: /home/zerops
 
       # Container stays idle — developer starts the app
       # manually: mix run --no-halt  or  iex -S mix
