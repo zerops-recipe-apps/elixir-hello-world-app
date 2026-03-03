@@ -1,0 +1,18 @@
+# Build artifacts — cached between Zerops builds
+/_build/
+/deps/
+
+# Mix and Elixir tooling
+*.ez
+.mix/
+
+# Environment files
+.env
+.env.*
+
+# Test coverage
+/cover/
+
+# Editor and OS
+.DS_Store
+.elixir_ls/
