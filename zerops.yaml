@@ -73,28 +73,44 @@ zerops:
   # Dev setup — deploy full source with all deps so the
   # developer can SSH in and start working immediately.
   # Zerops prepares the workspace; the developer drives
-  # compilation and application startup via SSH.
+  # application startup via SSH.
   - setup: dev
     build:
       base: elixir@1.16
       envVariables:
         MIX_ENV: dev
+        # HOME is needed in build so Mix can locate its
+        # archives when compiling deps.
+        HOME: /home/zerops
       buildCommands:
-        # Install all deps (including dev/test) into ./deps/
-        # so they're available in the runtime container.
+        # Fetch all deps (including dev/test) and compile
+        # the full project. Deploying pre-compiled _build/
+        # means initCommands can run migrations without
+        # recompiling from source on the runtime container.
+        - mix local.hex --force
+        - mix local.rebar --force
         - mix deps.get
+        - mix compile
       deployFiles:
         # Deploy the entire working directory — source,
-        # config, and pre-fetched deps all land at /var/www/.
+        # pre-fetched deps, and compiled beam files all
+        # land at /var/www/ for immediate SSH use.
         - ./
       cache:
-        # Cache fetched dep source for faster re-deploys.
+        # Cache dep sources for faster subsequent deploys.
         - deps
 
     run:
       # Use the Elixir image for dev — provides mix, iex,
       # and the full Erlang toolchain for SSH development.
       base: elixir@1.16
+
+      # Install Hex in the runtime container so 'mix'
+      # commands work without interactive prompts. Runs
+      # once per container creation (cached in image).
+      prepareCommands:
+        - mix local.hex --force
+        - mix local.rebar --force
 
       # Run migration once — database is ready when the
       # developer SSHs in (no manual setup required).
@@ -113,9 +129,9 @@ zerops:
         DB_USER: ${db_user}
         DB_PASS: ${db_password}
         DB_NAME: db
-        # Mix requires HOME to locate ~/.mix archives.
-        # Zerops runtime containers don't inherit HOME
-        # from the OS user — set it explicitly.
+        # Mix and Erlang require HOME to locate ~/.mix and
+        # ~/.erlang.cookie. Zerops runtime containers don't
+        # inherit HOME — set it explicitly.
         HOME: /home/zerops
 
       # Container stays idle — developer starts the app
