@@ -6,10 +6,8 @@ defmodule App.Application do
     port = Application.get_env(:app, :port, 4000)
 
     children = [
-      # Start the Ecto repo first so DB connections are ready
-      # before the HTTP server accepts requests.
       App.Repo,
-      {Plug.Cowboy, scheme: :http, plug: App.Router, options: [port: port]}
+      {Bandit, plug: App.Router, scheme: :http, port: port, ip: {0, 0, 0, 0}}
     ]
 
     opts = [strategy: :one_for_one, name: App.Supervisor]

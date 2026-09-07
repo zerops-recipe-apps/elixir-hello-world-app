@@ -1,10 +1,13 @@
 defmodule App.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @source_url "https://github.com/zerops-recipe-apps/elixir-hello-world-app"
+
   def project do
     [
       app: :app,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.16",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -13,7 +16,13 @@ defmodule App.MixProject do
         app: [
           include_executables_for: [:unix]
         ]
-      ]
+      ],
+      description: "Minimal Elixir Plug/Bandit + Ecto hello-world recipe for Zerops",
+      package: [
+        licenses: ["MIT"],
+        links: %{"GitHub" => @source_url}
+      ],
+      source_url: @source_url
     ]
   end
 
@@ -29,10 +38,11 @@ defmodule App.MixProject do
 
   defp deps do
     [
-      {:plug_cowboy, "~> 2.7"},
+      {:plug, "~> 1.20.3"},
+      {:bandit, "~> 1.12.4"},
       {:jason, "~> 1.4"},
-      {:ecto_sql, "~> 3.12"},
-      {:postgrex, "~> 0.19"}
+      {:ecto_sql, "~> 3.13"},
+      {:postgrex, "~> 0.22"}
     ]
   end
 end
