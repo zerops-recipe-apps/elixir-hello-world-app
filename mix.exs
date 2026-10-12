@@ -39,7 +39,7 @@ defmodule App.MixProject do
   defp deps do
     [
       {:plug, "~> 1.20.3"},
-      {:bandit, "~> 1.12.4"},
+      {:bandit, "~> 1.12.5"},
       {:jason, "~> 1.4"},
       {:ecto_sql, "~> 3.13"},
       {:postgrex, "~> 0.22"}
